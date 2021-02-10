@@ -13,7 +13,7 @@
       <p class="text-2xl font-semibold mr-8">Latest 5 scores:</p>
 
       <div class="flex space-x-4">
-				<p v-for="score in scores" :key="score">{{ score }} ms</p>
+				<p v-for="score in scores" :key="score.id">{{ score.value }} ms</p>
 			</div>
     </div>
 
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import {nanoid} from 'nanoid'
 import { generateRandomValue } from "./utils/funcs";
 import Canvas from "./components/Canvas";
 
@@ -41,8 +42,11 @@ export default {
       this.delay = generateRandomValue(1000, 5000);
     },
     sendResult(finalTime) {
+			const id = nanoid()
+			console.log([{ id, value: finalTime }, ...this.scores.slice(0, 4)])
+
       this.isPlaying = false;
-      this.scores = [finalTime, ...this.scores.slice(0, 4)];
+      this.scores = [{ id, value: finalTime }, ...this.scores.slice(0, 4)];
     },
   },
 };
